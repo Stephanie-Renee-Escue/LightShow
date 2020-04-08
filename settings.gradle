@@ -1,0 +1,2 @@
+rootProject.name='LightShow'
+include ':app'

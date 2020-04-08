@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/playClassicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="75dp"
+            android:background="@color/darkBlue"
+            android:padding="10dp"
+            android:text="@string/play_classic"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/playRewindButton"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="294dp" />
+
+        <Button
+            android:id="@+id/playRewindButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="75dp"
+            android:background="@color/darkGreen"
+            android:padding="10dp"
+            android:text="@string/play_rewind"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/playSurpriseButton"
+            tools:layout_editor_absoluteY="294dp" />
+
+        <Button
+            android:id="@+id/playSurpriseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="68dp"
+            android:background="@color/darkRed"
+            android:padding="10dp"
+            android:text="@string/play_surprise"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/main_text"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/rewindLogoImageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:contentDescription="@string/light_show_classic_logo"
+            app:layout_constraintBottom_toTopOf="@+id/playRewindButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playClassicButton"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/rewind_logo" />
+
+        <ImageView
+            android:id="@+id/surpriseLogoImageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:contentDescription="@string/light_show_surprise_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/surprise_logo"
+            tools:layout_editor_absoluteY="204dp" />
+
+        <ImageView
+            android:id="@+id/classicLogoImageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="25dp"
+            android:contentDescription="@string/light_show_rewind_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:srcCompat="@drawable/classic_logo" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
