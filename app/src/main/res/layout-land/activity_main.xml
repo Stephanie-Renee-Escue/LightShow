@@ -1,105 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightGray">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+    <Button
+        android:id="@+id/playClassicButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/classicLogoImageView"
+        android:layout_marginTop="40dp"
+        android:background="@color/darkBlue"
+        android:padding="10dp"
+        android:text="@string/play_classic"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/vertical33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/classicLogoImageView" />
 
-        <Button
-            android:id="@+id/playClassicButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="75dp"
-            android:background="@color/darkBlue"
-            android:padding="10dp"
-            android:text="@string/play_classic"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/playRewindButton"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="294dp" />
+    <Button
+        android:id="@+id/playRewindButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rewindLogoImageView"
+        android:layout_marginTop="40dp"
+        android:background="@color/darkGreen"
+        android:padding="10dp"
+        android:text="@string/play_rewind"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        app:layout_constraintStart_toStartOf="@+id/vertical33"
+        app:layout_constraintTop_toBottomOf="@+id/rewindLogoImageView" />
 
-        <Button
-            android:id="@+id/playRewindButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="75dp"
-            android:background="@color/darkGreen"
-            android:padding="10dp"
-            android:text="@string/play_rewind"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/playSurpriseButton"
-            tools:layout_editor_absoluteY="294dp" />
+    <Button
+        android:id="@+id/playSurpriseButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/surpriseLogoImageView"
+        android:layout_marginTop="40dp"
+        android:background="@color/darkRed"
+        android:padding="10dp"
+        android:text="@string/play_surprise"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical55"
+        app:layout_constraintTop_toBottomOf="@+id/surpriseLogoImageView" />
 
-        <Button
-            android:id="@+id/playSurpriseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="68dp"
-            android:background="@color/darkRed"
-            android:padding="10dp"
-            android:text="@string/play_surprise"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/main_text"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="@string/main_text"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/rewindLogoImageView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/textView"
+        android:layout_margin="50dp"
+        android:layout_marginEnd="44dp"
+        android:layout_toEndOf="@id/classicLogoImageView"
+        android:contentDescription="@string/ls_classic_logo"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
+        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        app:layout_constraintStart_toStartOf="@+id/vertical33"
+        app:layout_constraintTop_toTopOf="@+id/horizontal24"
+        app:layout_constraintVertical_bias="0.506"
+        app:srcCompat="@drawable/rewind_logo" />
 
-        <ImageView
-            android:id="@+id/rewindLogoImageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
-            android:contentDescription="@string/light_show_classic_logo"
-            app:layout_constraintBottom_toTopOf="@+id/playRewindButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playClassicButton"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/rewind_logo" />
+    <ImageView
+        android:id="@+id/surpriseLogoImageView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@id/rewindLogoImageView"
+        android:contentDescription="@string/ls_surprise_logo"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical55"
+        app:layout_constraintTop_toTopOf="@+id/horizontal24"
+        app:srcCompat="@drawable/surprise_logo" />
 
-        <ImageView
-            android:id="@+id/surpriseLogoImageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:contentDescription="@string/light_show_surprise_logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/surprise_logo"
-            tools:layout_editor_absoluteY="204dp" />
+    <ImageView
+        android:id="@+id/classicLogoImageView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="50dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/ls_rewind_logo"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
+        app:layout_constraintEnd_toStartOf="@+id/vertical33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontal24"
+        app:srcCompat="@drawable/classic_logo" />
 
-        <ImageView
-            android:id="@+id/classicLogoImageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="25dp"
-            android:contentDescription="@string/light_show_rewind_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@drawable/classic_logo" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.24" />
 
-    </LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3333" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6666" />
+</androidx.constraintlayout.widget.ConstraintLayout>

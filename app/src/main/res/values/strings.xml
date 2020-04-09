@@ -1,27 +1,48 @@
 <resources>
     <string name="app_name">LightShow</string>
+    <string name="main_text">Test your skill with one\n of our fun LightShow games!</string>
+
+    <!-- Button text values -->
     <string name="play_again">Play Again</string>
+    <string name="play_game">Play Game</string>
     <string name="how_to_play">How To Play</string>
-    <string name="object_of_game">Object of the game: \nCorrectly repeat a longer and longer sequence of signals</string>
-    <string name="instructions">
+    <string name="main_menu">Main Menu</string>
+    <string name="play_classic">Play Classic</string>
+    <string name="play_rewind">Play Rewind</string>
+    <string name="play_surprise">Play Surprise</string>
+
+    <!-- Used for instruction layouts -->
+    <string name="object_of_game">Object of the game: \nCorrectly repeat a longer and longer\n sequence of signals</string>
+    <string name="classic_instructions">
         The game will give the first signal. Repeat the signal by pressing the same color.\n\n
         The game will duplicate the first signal and then add one.\n\n Repeat these two signals by pressing the same colors, in order.\n\n
         The game continues to repeat the same pattern and adds another signal every time you correctly repeat the pattern.\n\n
         After the 5th, 9th and 13th signals in a sequence, the game automatically speeds up.\n\n
        If you fail to repeat a sequence exactly, or if you take more than 5 seconds to repeat a signal, you lose.</string>
-    <string name="light_show_logo">Light Show Logo</string>
+    <string name="rewind_instructions">
+        The game will give the first signal. Repeat the signal by pressing the same color.\n\n
+        The game will duplicate the first signal and then add one.\n\n Repeat these two signals by repeating the sequence backwards.\n\n
+        The game continues to repeat the same pattern and adds another signal every time you correctly repeat the pattern in reverse order.\n\n
+        After the 5th, 9th and 13th signals in a sequence, the game automatically speeds up.\n\n
+       If you fail to repeat a sequence exactly, or if you take more than 5 seconds to repeat a signal, you lose.</string>
+    <string name="surprise_instructions">
+        In this game, every button has the same color and sound. You must remember the pattern by location only.
+        The game will give the first signal. Repeat the signal by pressing the same button.\n\n
+        The game will duplicate the first signal and then add one. Repeat these two signals by tapping the same buttons in order.\n\n
+        The game continues to repeat the same pattern and adds another signal every time you correctly repeat the pattern.\n\n
+        After the 5th, 9th and 13th signals in a sequence, the game automatically speeds up.\n\n
+       If you fail to repeat a sequence exactly, or if you take more than 5 seconds to repeat a signal, you lose.</string>
+
+    <!-- Image Content Descriptions -->
+    <string name="ls_masters_logo">LightShow Masters Logo</string>
+    <string name="ls_classic_logo">LightShow Classic Logo</string>
+    <string name="ls_surprise_logo">LightShow Surprise Logo</string>
+    <string name="ls_rewind_logo">LightShow Rewind Logo</string>
+    <string name="credits_logo">Credits Logo</string>
+    <string name="high_scores_logo">High Scores Logo</string>
+
+    <!-- Used for credit layout -->
     <string name="developers">Developers\n\nStephanie Escue\nLionel Sosa Estrada\nJoshua Foster</string>
     <string name="sounds">Sounds\n\nSound effects obtained from https://www.zapsplat.com\n\nRetro game tone, digital synth, fifths, short single sounds 2, 3, 4 and 5</string>
-    <string name="game_name">Game Name</string>
-    <string name="main_menu">Main Menu</string>
-    <string name="classic">Game Name</string>
-    <string name="rewind">Game Name</string>
-    <string name="surprise">Game Name</string>
-    <string name="play_classic">Play Classic</string>
-    <string name="play_rewind">Play Rewind</string>
-    <string name="play_surprise">Play Surprise</string>
-    <string name="light_show_classic_logo">Light Show Classic Logo</string>
-    <string name="light_show_surprise_logo">light_show_surprise_logo</string>
-    <string name="light_show_rewind_logo">light_show_rewind_logo</string>
-    <string name="main_text">Test your skill with one\n of our fun LightShow games!</string>
+    <string name="lightShow_masters">LightShow Masters</string>
 </resources>
