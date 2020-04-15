@@ -1,5 +1,6 @@
 package com.stephanieescue.lightshow;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -113,14 +114,10 @@ public class LightShow {
         }*/
         steps.add(generate_step());
         //Log.i("Tracking", "Added " + steps.get(steps.size()-1) + " Total Steps: " + steps.size());
-        disableButtons();
 
-        for (int i = 0; i < steps.size(); i++) {
-            PauseThread pause = new PauseThread(steps.get(i));
-            pause.execute();
-        }
+        PauseThread pause = new PauseThread();
+        pause.execute();
 
-        enableButtons();
     }
 
     private void disableButtons(){
@@ -149,26 +146,35 @@ public class LightShow {
     }
 
     class PauseThread extends AsyncTask<Void, Void, Void> {
-        int button;
-
-        public PauseThread(int buttonIndex){
-            button = buttonIndex;
-        }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            buttons[button].setBackgroundColor(lightColors[button]);
+            disableButtons();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            try {
-                Log.i("Tracking", "showSequence to sleep");
-                Thread.sleep(1500);
-                Log.i("Tracking", "showSequence from sleep");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            for (int i = 0; i < steps.size(); i++) {
+                final int ind = i;
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        buttons[steps.get(ind)].setBackgroundColor(lightColors[steps.get(ind)]);
+                    }
+                });
+                try {
+                    Log.i("Tracking", "showSequence to sleep");
+                    Thread.sleep(1500);
+                    Log.i("Tracking", "showSequence from sleep");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        buttons[steps.get(ind)].setBackgroundColor(darkColors[steps.get(ind)]);
+                    }
+                });
             }
             return null;
         }
@@ -176,7 +182,7 @@ public class LightShow {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            buttons[button].setBackgroundColor(darkColors[button]);
+            enableButtons();
         }
     }
 }
