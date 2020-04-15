@@ -3,7 +3,9 @@ package com.stephanieescue.lightshow;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -15,9 +17,11 @@ public class LightShow {
     //declarations
     private List<Integer> steps = new ArrayList<Integer>();
     private List<Integer> userSteps = new ArrayList<Integer>();
-    private Button topLeft, topRight, bottomLeft, bottomRight;
+    private Button topLeftButton, topRightButton, bottomLeftButton, bottomRightButton;
     private int topLeftDark, topLeftLight, topRightDark, topRightLight;
     private int bottomLeftDark, bottomLeftLight, bottomRightDark, bottomRightLight;
+    private Handler handler;
+    public int score=0;
 
     //default constructor
     public LightShow(){
@@ -31,10 +35,10 @@ public class LightShow {
 
     //constructor with views for the colors
     public void setButtons(Button topLeftView, Button topRightView, Button bottomLeftView, Button bottomRightView){
-        topLeft = topLeftView;
-        topRight = topRightView;
-        bottomLeft = bottomLeftView;
-        bottomRight = bottomRightView;
+        topLeftButton = topLeftView;
+        topRightButton = topRightView;
+        bottomLeftButton = bottomLeftView;
+        bottomRightButton = bottomRightView;
     }
 
     public void generate_sequence(int limit) {
@@ -47,11 +51,13 @@ public class LightShow {
             for (int i = 3; i < steps.size(); i++) {
                 if ((steps.get(i) == steps.get(i-1)) && (steps.get(i) == steps.get(i-2)) && (steps.get(i) == steps.get(i-3)))
                     steps.set(i, random.nextInt(4));
-        }
+            }
     }
 
-    public void clear_steps(){
+    public void new_game(){
         steps.clear();
+        userSteps.clear();
+        generate_sequence(25);
     }
 
     public List<Integer> get_sequence(int count){
@@ -74,8 +80,9 @@ public class LightShow {
             Log.d("Steps", "Number of steps: " + steps.size() + " Current step: " + i);
             switch (steps.get(i)){
                 case 1:
-                    topLeft.setBackgroundColor(topLeftLight);
-                    /*topLeft.animate().setDuration(1000).withEndAction(new Runnable() {
+                    topLeftButton.setPressed(true);
+                    /*topLeft.setBackgroundColor(topLeftLight);
+                    topLeft.animate().setDuration(1000).withEndAction(new Runnable() {
                         @Override
                         public void run() {
                             // set color back to normal
@@ -86,14 +93,14 @@ public class LightShow {
                         @Override
                         public void run() {
                             // set color back to normal
-                            topLeft.setBackgroundColor(topLeftDark);
+                            topLeftButton.setBackgroundColor(topLeftDark);
                         }
                     };
                     //topLeft.animate().setDuration(1000).withEndAction(runnableTopLeft).start();
                     handler.postDelayed(runnableTopLeft, 1000);
                     break;
                 case 2:
-                    topRight.setBackgroundColor(topRightLight);
+                    topRightButton.setPressed(true);
                     /*topRight.animate().setDuration(1000).withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -105,14 +112,14 @@ public class LightShow {
                         @Override
                         public void run() {
                             // set color back to normal
-                            topRight.setBackgroundColor(topRightDark);
+                            topRightButton.setBackgroundColor(topRightDark);
                         }
                     };
                     //topRight.animate().setDuration(1000).withEndAction(runnableTopRight).start();
                     handler.postDelayed(runnableTopRight, 1000);
                     break;
                 case 3:
-                    bottomLeft.setBackgroundColor(bottomLeftLight);
+                    bottomLeftButton.setPressed(true);
                     /*bottomLeft.animate().setDuration(1000).withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -124,14 +131,14 @@ public class LightShow {
                         @Override
                         public void run() {
                             // set color back to normal
-                            bottomLeft.setBackgroundColor(bottomLeftDark);
+                            bottomLeftButton.setBackgroundColor(bottomLeftDark);
                         }
                     };
                     //bottomLeft.animate().setDuration(1000).withEndAction(runnableBottomLeft).start();
                     handler.postDelayed(runnableBottomLeft, 1000);
                     break;
                 case 4:
-                    bottomRight.setBackgroundColor(bottomRightLight);
+                    bottomRightButton.setPressed(true);
                     /*bottomRight.animate().setDuration(1000).withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -143,7 +150,7 @@ public class LightShow {
                         @Override
                         public void run() {
                             // set color back to normal
-                            bottomRight.setBackgroundColor(bottomRightDark);
+                            bottomRightButton.setBackgroundColor(bottomRightDark);
                         }
                     };
                     //bottomRight.animate().setDuration(1000).withEndAction(runnableBottomRight).start();

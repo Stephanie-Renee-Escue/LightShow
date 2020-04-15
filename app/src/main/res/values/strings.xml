@@ -7,6 +7,7 @@
     <string name="play_game">Play Game</string>
     <string name="how_to_play">How To Play</string>
     <string name="main_menu">Main Menu</string>
+    <string name="high_score">High Scores</string>
     <string name="play_classic">Play Classic</string>
     <string name="play_rewind">Play Rewind</string>
     <string name="play_surprise">Play Surprise</string>
@@ -45,4 +46,7 @@
     <string name="developers">Developers\n\nStephanie Escue\nLionel Sosa Estrada\nJoshua Foster</string>
     <string name="sounds">Sounds\n\nSound effects obtained from https://www.zapsplat.com\n\nRetro game tone, digital synth, fifths, short single sounds 2, 3, 4 and 5</string>
     <string name="lightShow_masters">LightShow Masters</string>
+    <string name="score">Your Score:</string>
+    <string name="top_score">Top Score:</string>
+    <string name="game_over">GAME OVER</string>
 </resources>
