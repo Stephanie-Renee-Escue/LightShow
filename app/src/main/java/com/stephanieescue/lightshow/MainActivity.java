@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -22,12 +23,16 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private SoundPool soundPool;
     private Set<Integer> soundsLoaded;
-    int soundId, topLeftId, topRightId, bottomLeftId, bottomRightId, errorId, gameStartId, gameOverId;
-    Button topLeftButton, topRightButton, bottomLeftButton, bottomRightButton;
+    private int[] sounds = new int[4];
+    private Button[] buttons = new Button[4];
+    int errorId, gameStartId, gameOverId;
     public TextView message, playerScore, highScore;;
+    LightShow game;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        game = new LightShow(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -37,42 +42,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         soundsLoaded = new HashSet<Integer>();
         soundSetup();
+        setMainActivityListeners();
 
     }
 
-    LightShow game = new LightShow();
+    private void setMainActivityListeners(){
+        //set listeners for game selection
+        Button temp;
+        temp = findViewById(R.id.playClassicButton);
+        temp.setOnClickListener(this);
+        temp = findViewById(R.id.playRewindButton);
+        temp.setOnClickListener(this);
+        temp = findViewById(R.id.playSurpriseButton);
+        temp.setOnClickListener(this);
+
+    }
+
+    private void setGameboardListeners(){
+        Button temp;
+        temp = findViewById(R.id.mainMenuButton);
+        temp.setOnClickListener(this);
+
+        // setup game board
+
+        for (int i = 0; i < 4; i++)
+            buttons[i].setOnClickListener(this);
+    }
 
     public void onClick(View view) {
-        setContentView(R.layout.game_board);
-        ImageView logo = findViewById(R.id.logo);
+
 
         switch (view.getId()) {
 
+            //These 3 cases are for game selection
             case R.id.playClassicButton:
-                logo.setImageResource(R.drawable.classic_logo);
-                playGame();
+                playClassic();
                 //howToPlayButton.setBackgroundColor(getResources().getColor(R.color.darkBlue));
                 break;
             case R.id.playRewindButton:
-                logo.setImageResource(R.drawable.rewind_logo);
-                playGame();
+                //logo.setImageResource(R.drawable.rewind_logo);
+                playClassic();
                 break;
             case R.id.playSurpriseButton:
-                logo.setImageResource(R.drawable.surprise_logo);
-                playGame();
+                //logo.setImageResource(R.drawable.surprise_logo);
+                playClassic();
+                break;
+            //These 3 are for buttons in the game board
+            case R.id.mainMenuButton:
+                setContentView(R.layout.activity_main);
+                setMainActivityListeners();
+                break;
+            case R.id.highScoreButton:
+                setContentView(R.layout.high_score);
+                break;
+            case R.id.playButton:
+                //new game
+                break;
+            //The default is for the 4 game buttons
+            default:
+                for (int i = 0; i < 4; i++){
+                    if (view == buttons[i]){
+                        playSound(sounds[i]);
+                        nextStep(i);
+                    }
+                }
         }
     }
 
-    private void playGame(){
-        Handler handler = new Handler();
+    private void playClassic(){
+        Log.i("Tracking", "playClassic()");
+        setContentView(R.layout.game_board);
+        ImageView logo = findViewById(R.id.logo);
+        logo.setImageResource(R.drawable.classic_logo);
+        buttons[0] = findViewById(R.id.topLeftButton);
+        buttons[1] = findViewById(R.id.topRightButton);
+        buttons[2] = findViewById(R.id.bottomLeftButton);
+        buttons[3] = findViewById(R.id.bottomRightButton);
+        Log.i("Tracking:","Top left: " + buttons[0].getId());
+        Log.i("Tracking:","Top left: " + buttons[1].getId());
+        Log.i("Tracking:","Top left: " + buttons[2].getId());
+        Log.i("Tracking:","Top left: " + buttons[3].getId());
+        count = 0;
+        game.new_game();
+        game.setButtons(buttons);
+
+        setGameboardListeners();
 
         // playerScore.setText("Your Score: " + game.getScore);
         // Add top score here
 
         playSound(gameStartId);
-        game.setButtons((Button)findViewById(R.id.topLeftButton), (Button)findViewById(R.id.topRightButton),
-                (Button)findViewById(R.id.bottomLeftButton), (Button)findViewById(R.id.bottomRightButton));
-        setButtonListeners();
         game.setColors(ResourcesCompat.getColor(getResources(), R.color.darkGreen, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightGreen, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
@@ -94,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         game.showSequence();
     }
 
-    private void setButtonListeners(){
+    /*private void setButtonListeners(){
         Button tempButton;
 
         tempButton = findViewById(R.id.topLeftButton);
@@ -158,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-    }
+    }*/
 
     private void soundSetup() {
 
@@ -183,10 +242,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // Assigning sounds to integer Id
-        topLeftId = soundPool.load(this, R.raw.sound1, 1);
-        topRightId = soundPool.load(this, R.raw.sound2, 1);
-        bottomLeftId = soundPool.load(this, R.raw.sound3, 1);
-        bottomRightId = soundPool.load(this, R.raw.sound4, 1);
+        sounds[0] = soundPool.load(this, R.raw.sound1, 1);
+        sounds[1] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[2] = soundPool.load(this, R.raw.sound3, 1);
+        sounds[3] = soundPool.load(this, R.raw.sound4, 1);
         errorId = soundPool.load(this, R.raw.error, 1);
         gameStartId = soundPool.load(this, R.raw.startgame, 1);
         gameOverId = soundPool.load(this, R.raw.gameover, 1);
@@ -205,16 +264,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public nextStep(TextView message) {
             gameMessage = message;
         } */
-
-        if (game.validate_next_step(step))
-            game.showSequence();
-        else {
-            playSound(errorId);
-            //message.setVisibility(View.VISIBLE);
-            // message.setText(getResources().getString(R.string.game_over));
-            playSound(gameOverId);
-            //setContentView(R.layout.activity_main);
+        if (count < game.get_current_step()){ //partial step
+            if (game.validate_next_step(step))
+                count++;
+            else
+                endGame();
+        } else if (count == game.get_current_step()) { //final step of current sequence
+            if (game.validate_next_step(step)) {
+                count = 0;
+                game.showSequence();
+            } else
+                endGame();
         }
+    }
+
+    public void endGame(){
+        playSound(errorId);
+        //message.setVisibility(View.VISIBLE);
+        // message.setText(getResources().getString(R.string.game_over));
+        playSound(gameOverId);
+        //setContentView(R.layout.activity_main);
+
     }
 
     // Used for all click events for main menu button
