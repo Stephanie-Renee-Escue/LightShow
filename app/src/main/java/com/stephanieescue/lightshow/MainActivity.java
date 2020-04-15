@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttons[1] = findViewById(R.id.topRightButton);
         buttons[2] = findViewById(R.id.bottomLeftButton);
         buttons[3] = findViewById(R.id.bottomRightButton);
-        Log.i("Tracking:","Top left: " + buttons[0].getId());
-        Log.i("Tracking:","Top left: " + buttons[1].getId());
-        Log.i("Tracking:","Top left: " + buttons[2].getId());
-        Log.i("Tracking:","Top left: " + buttons[3].getId());
+        Log.i("Tracking:","Button 0: " + buttons[0].getId());
+        Log.i("Tracking:","Button 1: " + buttons[1].getId());
+        Log.i("Tracking:","Button 2: " + buttons[2].getId());
+        Log.i("Tracking:","Button 3: " + buttons[3].getId());
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Add top score here
 
         playSound(gameStartId);
+
+
         game.setColors(ResourcesCompat.getColor(getResources(), R.color.darkGreen, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightGreen, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
@@ -140,84 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
-        /*for (int i=0; i < 4; i++) {
-            topLeftButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lightGreen));
-            handler.postDelayed((Runnable) this, 1000);
-            topRightButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lightGreen));
-            handler.postDelayed((Runnable) this, 1000);
-            bottomLeftButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lightGreen));
-            handler.postDelayed((Runnable) this, 1000);
-            bottomRightButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lightGreen));
-            handler.postDelayed((Runnable) this, 1000);
-        } */
         game.showSequence();
     }
-
-    /*private void setButtonListeners(){
-        Button tempButton;
-
-        tempButton = findViewById(R.id.topLeftButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                soundId=topLeftId;
-                playSound(soundId);
-                nextStep(1);
-            }
-        });
-        tempButton = findViewById(R.id.topRightButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                soundId=topRightId;
-                playSound(soundId);
-                nextStep(2);
-            }
-        });
-        tempButton = findViewById(R.id.bottomLeftButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                soundId=bottomLeftId;
-                playSound(soundId);
-                nextStep(3);
-            }
-        });
-        tempButton = findViewById(R.id.bottomRightButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                soundId=bottomRightId;
-                playSound(soundId);
-                nextStep(4);
-            }
-        });
-
-        findViewById(R.id.mainMenuButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setContentView(R.layout.activity_main);
-            }
-        });
-
-        findViewById(R.id.highScoreButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setContentView(R.layout.high_score);
-
-            }
-        });
-
-        findViewById(R.id.playButton).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                //message.setVisibility(View.INVISIBLE);
-
-            }
-        });
-
-    }*/
 
     private void soundSetup() {
 
@@ -291,4 +217,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void mainMenu(View view) {
         setContentView(R.layout.activity_main);
     }
+
 }
