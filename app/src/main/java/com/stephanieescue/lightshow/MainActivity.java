@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         temp = findViewById(R.id.mainMenuButton);
         temp.setOnClickListener(this);
 
+        Button hs;
+        hs = findViewById(R.id.highScoreButton);
+        hs.setOnClickListener(this);
+
         // setup game board
 
         for (int i = 0; i < 4; i++)
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.playSurpriseButton:
                 //logo.setImageResource(R.drawable.surprise_logo);
-                playClassic();
+                playSurprise();
                 break;
             //These 3 are for buttons in the game board
             case R.id.mainMenuButton:
@@ -142,6 +146,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
+        game.showSequence();
+    }
+    private void playSurprise(){
+        Log.i("Tracking", "playClassic()");
+        setContentView(R.layout.game_board);
+        ImageView logo = findViewById(R.id.logo);
+        logo.setImageResource(R.drawable.classic_logo);
+        buttons[0] = findViewById(R.id.topLeftButton);
+        buttons[0].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        buttons[1] = findViewById(R.id.topRightButton);
+        buttons[1].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        buttons[2] = findViewById(R.id.bottomLeftButton);
+        buttons[2].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        buttons[3] = findViewById(R.id.bottomRightButton);
+        buttons[3].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        Log.i("Tracking:","Button 0: " + buttons[0].getId());
+        Log.i("Tracking:","Button 1: " + buttons[1].getId());
+        Log.i("Tracking:","Button 2: " + buttons[2].getId());
+        Log.i("Tracking:","Button 3: " + buttons[3].getId());
+        count = 0;
+        game.new_game();
+        game.setButtons(buttons);
+
+        setGameboardListeners();
+
+        // playerScore.setText("Your Score: " + game.getScore);
+        // Add top score here
+
+        playSound(gameStartId);
+
+
+        game.setColors(
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null));
         game.showSequence();
     }
 
