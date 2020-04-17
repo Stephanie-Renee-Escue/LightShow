@@ -230,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void nextStep(int step){
         /* TextView gameMessage;
-
         public nextStep(TextView message) {
             gameMessage = message;
         } */

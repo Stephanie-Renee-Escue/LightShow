@@ -108,7 +108,6 @@ public class LightShow {
                         }
                     };
                     handler.postDelayed(runnableBottomRight, 1000);
-
                     break;
             }
         }*/
@@ -154,27 +153,29 @@ public class LightShow {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            for (int i = 0; i < steps.size(); i++) {
-                final int ind = i;
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        buttons[steps.get(ind)].setBackgroundColor(lightColors[steps.get(ind)]);
-                    }
-                });
-                try {
+            try {
+                for (int i = 0; i < steps.size(); i++) {
+                    final int ind = i;
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            buttons[steps.get(ind)].setBackgroundColor(lightColors[steps.get(ind)]);
+                        }
+                    });
+
                     Log.i("Tracking", "showSequence to sleep");
                     Thread.sleep(1500);
                     Log.i("Tracking", "showSequence from sleep");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            buttons[steps.get(ind)].setBackgroundColor(darkColors[steps.get(ind)]);
+                        }
+                    });
                 }
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        buttons[steps.get(ind)].setBackgroundColor(darkColors[steps.get(ind)]);
-                    }
-                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             return null;
         }
