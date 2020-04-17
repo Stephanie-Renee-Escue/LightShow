@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -80,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //These 3 cases are for game selection
             case R.id.playClassicButton:
-                playClassic();
-                //howToPlayButton.setBackgroundColor(getResources().getColor(R.color.darkBlue));
+                PauseForIntro playIntroClassic = new PauseForIntro("Classic");
+                playIntroClassic.execute();
                 break;
             case R.id.playRewindButton:
                 //logo.setImageResource(R.drawable.rewind_logo);
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.playSurpriseButton:
                 //logo.setImageResource(R.drawable.surprise_logo);
-                playSurprise();
+                PauseForIntro playIntroSurprise = new PauseForIntro("Surprise");
+                playIntroSurprise.execute();
                 break;
             //These 3 are for buttons in the game board
             case R.id.mainMenuButton:
@@ -114,18 +117,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playClassic(){
-        Log.i("Tracking", "playClassic()");
-        setContentView(R.layout.game_board);
         ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
         buttons[0] = findViewById(R.id.topLeftButton);
         buttons[1] = findViewById(R.id.topRightButton);
         buttons[2] = findViewById(R.id.bottomLeftButton);
         buttons[3] = findViewById(R.id.bottomRightButton);
-        Log.i("Tracking:","Button 0: " + buttons[0].getId());
-        Log.i("Tracking:","Button 1: " + buttons[1].getId());
-        Log.i("Tracking:","Button 2: " + buttons[2].getId());
-        Log.i("Tracking:","Button 3: " + buttons[3].getId());
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -134,9 +131,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // playerScore.setText("Your Score: " + game.getScore);
         // Add top score here
-
-        playSound(gameStartId);
-
 
         game.setColors(ResourcesCompat.getColor(getResources(), R.color.darkGreen, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightGreen, null),
@@ -148,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
         game.showSequence();
     }
+
     private void playSurprise(){
         Log.i("Tracking", "playClassic()");
         setContentView(R.layout.game_board);
@@ -234,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             gameMessage = message;
         } */
         if (count < game.get_current_step()){ //partial step
-            if (game.validate_next_step(step))
+            if (game.validate_previous_step(count, step))
                 count++;
             else
                 endGame();
@@ -260,5 +255,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void mainMenu(View view) {
         setContentView(R.layout.activity_main);
     }
+
+    class PauseForIntro extends AsyncTask<Void, Void, Void> {
+        private String gameType;
+
+        //Constructor that receives the game type to start
+        public PauseForIntro(String game){
+            gameType = game;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            setContentView(R.layout.game_board);
+            playSound(gameStartId);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            switch (gameType) {
+                case "Classic":
+                    playClassic();
+                    break;
+                case "Surprise":
+                    playSurprise();
+            }
+        }
+    }
+
+    /*class PauseForSound extends AsyncTask<Void, Void, Void> {
+
+        //Constructor that receives the game type to start
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            setContentView(R.layout.game_board);
+            playSound(gameStartId);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            switch (gameType) {
+                case "Classic":
+                    playClassic();
+                    break;
+                case "Surprise":
+                    playSurprise();
+            }
+        }
+    }*/
+
 
 }

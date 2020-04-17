@@ -3,13 +3,17 @@ package com.stephanieescue.lightshow;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 public class LightShow {
@@ -22,14 +26,21 @@ public class LightShow {
     private int[] lightColors = new int[4];
     private final int MAX_STEPS = 25;
     private Context context;
+    private SoundPool soundPool;
+    private Set<Integer> soundsLoaded;
+    private int[] sounds = new int[4];
 
 
     //default constructor
     public LightShow(){
+        soundsLoaded = new HashSet<Integer>();
+        soundSetupClass();
     }
 
     public LightShow(Context context){
         this.context = context;
+        soundsLoaded = new HashSet<Integer>();
+        soundSetupClass();
     }
 
     //constructor with views for the colors
@@ -60,62 +71,22 @@ public class LightShow {
         return false;
     }
 
-    public void showSequence() {
-        /*Handler handler = new Handler();
-        for (int i = 0; i <= userSteps.size(); i++ ){
-            Log.d("Steps", "Number of steps: " + steps.size() + " Current step: " + i);
-            switch (steps.get(i)){
-                case 1:
-                    topLeftButton.setPressed(true);
-                    Runnable runnableTopLeft = new Runnable(){
-                        @Override
-                        public void run() {
-                            // set color back to normal
-                            topLeftButton.setBackgroundColor(topLeftDark);
-                        }
-                    };
-                    handler.postDelayed(runnableTopLeft, 1000);
-                    break;
-                case 2:
-                    topRightButton.setPressed(true);
-                    Runnable runnableTopRight = new Runnable(){
-                        @Override
-                        public void run() {
-                            // set color back to normal
-                            topRightButton.setBackgroundColor(topRightDark);
-                        }
-                    };
-                    handler.postDelayed(runnableTopRight, 1000);
-                    break;
-                case 3:
-                    bottomLeftButton.setPressed(true);
-                    Runnable runnableBottomLeft = new Runnable(){
-                        @Override
-                        public void run() {
-                            // set color back to normal
-                            bottomLeftButton.setBackgroundColor(bottomLeftDark);
-                        }
-                    };
-                    handler.postDelayed(runnableBottomLeft, 1000);
-                    break;
-                case 4:
-                    bottomRightButton.setPressed(true);
-                    Runnable runnableBottomRight = new Runnable(){
-                        @Override
-                        public void run() {
-                            // set color back to normal
-                            bottomRightButton.setBackgroundColor(bottomRightDark);
-                        }
-                    };
-                    handler.postDelayed(runnableBottomRight, 1000);
-                    break;
-            }
-        }*/
-        steps.add(generate_step());
-        //Log.i("Tracking", "Added " + steps.get(steps.size()-1) + " Total Steps: " + steps.size());
+    public boolean validate_previous_step(int position, int current_step){
+        if (steps.get(position) == current_step) {
+            userSteps.add(current_step);
+            return true;
+        }
+        return false;
+    }
 
+
+    public void showSequence() {
+        steps.add(generate_step());
+
+        //Changing color in a new thread
         PauseThread pause = new PauseThread();
         pause.execute();
+
 
     }
 
@@ -156,6 +127,11 @@ public class LightShow {
             try {
                 for (int i = 0; i < steps.size(); i++) {
                     final int ind = i;
+                    //short pause after user clicks color
+                    if (i == 0) {
+                        Thread.sleep(400);
+                    }
+                    playSound(sounds[steps.get(ind)]);
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -164,7 +140,7 @@ public class LightShow {
                     });
 
                     Log.i("Tracking", "showSequence to sleep");
-                    Thread.sleep(1500);
+                    Thread.sleep(850);
                     Log.i("Tracking", "showSequence from sleep");
 
                     ((Activity) context).runOnUiThread(new Runnable() {
@@ -173,6 +149,8 @@ public class LightShow {
                             buttons[steps.get(ind)].setBackgroundColor(darkColors[steps.get(ind)]);
                         }
                     });
+
+                    Thread.sleep(250); //short pause to see if a button is pressed twice in a row
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -184,6 +162,49 @@ public class LightShow {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             enableButtons();
+            //set background back to the drawable resource
+            buttons[0].setBackgroundResource(R.drawable.topleftbutton);
+            buttons[1].setBackgroundResource(R.drawable.toprightbutton);
+            buttons[2].setBackgroundResource(R.drawable.bottomleftbutton);
+            buttons[3].setBackgroundResource(R.drawable.bottomrightbutton);
+
         }
     }
+
+    private void soundSetupClass() {
+
+        AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+        attrBuilder.setUsage(AudioAttributes.USAGE_GAME);
+
+        SoundPool.Builder spBuilder = new SoundPool.Builder();
+        spBuilder.setAudioAttributes(attrBuilder.build());
+        spBuilder.setMaxStreams(1);
+        soundPool = spBuilder.build();
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                if (status == 0) { // success
+                    soundsLoaded.add(sampleId);
+                    Log.i("SOUND", "Sound loaded in class " + sampleId);
+                } else {
+                    Log.i("SOUND", "Error cannot load sound status = " + status);
+                }
+            }
+        });
+
+        // Assigning sounds to integer Id
+        Log.i("SOUND", "Trying to add sounds");
+        sounds[0] = soundPool.load((Activity)context, R.raw.sound1, 1);
+        sounds[1] = soundPool.load((Activity)context, R.raw.sound2, 1);
+        sounds[2] = soundPool.load((Activity)context, R.raw.sound3, 1);
+        sounds[3] = soundPool.load((Activity)context, R.raw.sound4, 1);
+    }
+
+    private void playSound(int soundId) {
+        if (soundsLoaded.contains(soundId)) {
+            soundPool.play(soundId, 1.0f, 1.0f, 0, 0, 1.0f);
+        }
+    }
+
 }
