@@ -7,6 +7,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
@@ -14,12 +17,24 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public TextView message, playerScore, highScore;;
     LightShow game;
     int count;
+    final private int MAX_STEPS = 25;
+    String[] highScoreNames = new String[11];
+    int[] highScoreValues = new int[11];
+    String gameType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button temp;
         temp = findViewById(R.id.mainMenuButton);
         temp.setOnClickListener(this);
+        temp = findViewById(R.id.playButton);
+        temp.setOnClickListener(this);
 
         Button hs;
         hs = findViewById(R.id.highScoreButton);
@@ -96,16 +117,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             //These 3 are for buttons in the game board
             case R.id.mainMenuButton:
+            case R.id.mainMenuHighScores:
                 setContentView(R.layout.activity_main);
                 setMainActivityListeners();
                 break;
             case R.id.highScoreButton:
-                setContentView(R.layout.high_score);
+                showHighScores();
                 break;
             case R.id.playButton:
-                //new game
+                if (gameType.equals("Classic")) {
+                    PauseForIntro rePlayIntroClassic = new PauseForIntro("Classic");
+                    rePlayIntroClassic.execute();
+                } else if (gameType.equals("Surprise"))
+                    playSurprise();
                 break;
-            //The default is for the 4 game buttons
+            //this is the button in high score
+                //The default is for the 4 game buttons
             default:
                 for (int i = 0; i < 4; i++){
                     if (view == buttons[i]){
@@ -117,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playClassic(){
+        gameType = "Classic";
         ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
         buttons[0] = findViewById(R.id.topLeftButton);
@@ -144,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playSurprise(){
-        Log.i("Tracking", "playClassic()");
         setContentView(R.layout.game_board);
         ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
@@ -156,10 +183,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttons[2].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[3] = findViewById(R.id.bottomRightButton);
         buttons[3].setBackgroundColor(getResources().getColor(R.color.darkRed));
-        Log.i("Tracking:","Button 0: " + buttons[0].getId());
-        Log.i("Tracking:","Button 1: " + buttons[1].getId());
-        Log.i("Tracking:","Button 2: " + buttons[2].getId());
-        Log.i("Tracking:","Button 3: " + buttons[3].getId());
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -228,27 +251,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public nextStep(TextView message) {
             gameMessage = message;
         } */
-        if (count < game.get_current_step()){ //partial step
+        int step_count = game.get_current_step();
+        if (count < step_count){ //partial step
             if (game.validate_previous_step(count, step))
                 count++;
             else
                 endGame();
-        } else if (count == game.get_current_step()) { //final step of current sequence
-            if (game.validate_next_step(step)) {
-                count = 0;
-                game.showSequence();
-            } else
-                endGame();
+        } else { //final step of current sequence
+            if (step_count == MAX_STEPS) {//user reached max number of steps
+                if (game.validate_next_step(step))
+                    winGame();
+            } else { //max number of current sequence
+                if (game.validate_next_step(step)) {
+                    count = 0;
+                    game.showSequence();
+                } else
+                    endGame();
+            }
         }
     }
 
-    public void endGame(){
-        playSound(errorId);
-        //message.setVisibility(View.VISIBLE);
-        // message.setText(getResources().getString(R.string.game_over));
-        playSound(gameOverId);
-        //setContentView(R.layout.activity_main);
+    private void winGame(){
+        PauseGameOver gameOver = new PauseGameOver("win");
+        gameOver.execute();
+    }
 
+    public void endGame(){
+        PauseGameOver gameOver = new PauseGameOver("lose");
+        gameOver.execute();
     }
 
     // Used for all click events for main menu button
@@ -256,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
     }
 
+    //Thread to pause game while the intro song plays
     class PauseForIntro extends AsyncTask<Void, Void, Void> {
         private String gameType;
 
@@ -290,25 +321,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case "Surprise":
                     playSurprise();
+                    break;
             }
         }
     }
 
-    /*class PauseForSound extends AsyncTask<Void, Void, Void> {
+    //thread to pause game while gave over sounds play
+    class PauseGameOver extends AsyncTask<Void, Void, Void> {
+        private String gameResult;
 
-        //Constructor that receives the game type to start
+        public PauseGameOver(String result){
+            gameResult = result;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            setContentView(R.layout.game_board);
-            playSound(gameStartId);
+            if (gameResult.equals("lose"))
+                playSound(errorId);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Thread.sleep(2500);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -318,15 +354,149 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            switch (gameType) {
-                case "Classic":
-                    playClassic();
-                    break;
-                case "Surprise":
-                    playSurprise();
+            // play sound depending on result
+            if (gameResult.equals("lose")){
+                playSound(gameOverId);
+            } else if (gameResult.equals("win")) {
+                playSound(gameStartId);
             }
+
+            int score = game.get_current_step();
+            // read high scores or write new file
+            if (readHighScores()){
+                if (score >= highScoreValues[9]){ //player scored higher than records
+                    addScore(game.get_current_step());
+                }
+            } else {
+                createScores();
+                Boolean temp = readHighScores();
+                addScore(game.get_current_step());
+            }
+            game.disableButtons();
         }
-    }*/
+    }
+
+    private void createScores(){
+        FileOutputStream fos;
+        try {
+            fos = openFileOutput("highScores.txt", Context.MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
+            PrintWriter pw = new PrintWriter(bw);
+            for (int i = 0; i < 10; i++){
+                pw.println("null");
+                pw.println("0");
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void saveScores(){
+        FileOutputStream fos;
+        try {
+            fos = openFileOutput("highScores.txt", Context.MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
+            PrintWriter pw = new PrintWriter(bw);
+            for (int i = 0; i < 10; i++){
+                pw.println(highScoreNames[i]);
+                pw.println(highScoreValues[i]);
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
+    private void addScore(int newScore){
+        int newPosition = 0;
+        for (int i = 0; i < 10; i++){
+            if (newScore >= highScoreValues[newPosition])
+                break;
+        }
+        /*while ((newScore >= highScoreValues[newPosition - 1]) && (newPosition > 0)) {
+            Log.i("Tracking", newPosition + ": " + newScore + ">=" + highScoreValues[newPosition]);
+            newPosition--;
+        }*/
+        for (int i = newPosition; i < 10; i++){
+            highScoreValues[i+1] = highScoreValues[i];
+            highScoreNames[i+1] = highScoreNames[i];
+        }
+        highScoreValues[newPosition] = newScore;
+        getNewName(newPosition);
+
+    }
+
+    //inflate dialog to get player's name
+    private void getNewName(int position){
+
+        final int pos = position;
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.high_score_dialog, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                highScoreNames[pos] = userInput.getText().toString();
+                                saveScores();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+    }
+
+    private void setHighScoreListener(){
+        Button temp = findViewById(R.id.mainMenuHighScores);
+        temp.setOnClickListener(this);
+    }
+
+    private boolean readHighScores(){
+        try { //tries to open file with high scores
+            FileInputStream fis = openFileInput("highScores.txt");
+            Scanner scanner = new Scanner(fis);
+            for (int i = 0; i < 10; i++){
+                highScoreNames[i] = scanner.nextLine();
+                if (highScoreNames[i] == "null"){
+                    highScoreNames[i] = "";
+                }
+                highScoreValues[i] = Integer.parseInt(scanner.nextLine());
+            }
+            scanner.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void showHighScores(){
+        setContentView(R.layout.high_score);
+        String[] highScoresList = new String[10];
+        for (int i = 0; i < 10; i++)
+            highScoresList[i] = highScoreValues[i] + " - " + highScoreNames[i];
+        ListView listView = findViewById(R.id.highScoreListView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoresList);
+        listView.setAdapter(adapter);
+        setHighScoreListener();
+    }
 }

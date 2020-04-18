@@ -24,7 +24,6 @@ public class LightShow {
     private Button[] buttons = new Button[4];
     private int[] darkColors = new int[4];
     private int[] lightColors = new int[4];
-    private final int MAX_STEPS = 25;
     private Context context;
     private SoundPool soundPool;
     private Set<Integer> soundsLoaded;
@@ -90,13 +89,13 @@ public class LightShow {
 
     }
 
-    private void disableButtons(){
+    public void disableButtons(){
         for (int i = 0; i < 4; i++){
             buttons[i].setClickable(false);
         }
     }
 
-    private void enableButtons(){
+    public void enableButtons(){
         for (int i = 0; i < 4; i++){
             buttons[i].setClickable(true);
         }
@@ -139,9 +138,7 @@ public class LightShow {
                         }
                     });
 
-                    Log.i("Tracking", "showSequence to sleep");
                     Thread.sleep(850);
-                    Log.i("Tracking", "showSequence from sleep");
 
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
@@ -194,7 +191,6 @@ public class LightShow {
         });
 
         // Assigning sounds to integer Id
-        Log.i("SOUND", "Trying to add sounds");
         sounds[0] = soundPool.load((Activity)context, R.raw.sound1, 1);
         sounds[1] = soundPool.load((Activity)context, R.raw.sound2, 1);
         sounds[2] = soundPool.load((Activity)context, R.raw.sound3, 1);
