@@ -28,6 +28,7 @@ public class LightShow {
     private SoundPool soundPool;
     private Set<Integer> soundsLoaded;
     private int[] sounds = new int[4];
+    private int[] soundsIds = new int[4];
 
 
     //default constructor
@@ -114,6 +115,13 @@ public class LightShow {
         lightColors[3] = fourLight;
     }
 
+    public void setSounds(int sound1, int sound2, int sound3, int sound4){
+        soundsIds[0] = sound1;
+        soundsIds[1] = sound2;
+        soundsIds[2] = sound3;
+        soundsIds[3] = sound4;
+    }
+
     class PauseThread extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -191,10 +199,10 @@ public class LightShow {
         });
 
         // Assigning sounds to integer Id
-        sounds[0] = soundPool.load((Activity)context, R.raw.sound1, 1);
-        sounds[1] = soundPool.load((Activity)context, R.raw.sound2, 1);
-        sounds[2] = soundPool.load((Activity)context, R.raw.sound3, 1);
-        sounds[3] = soundPool.load((Activity)context, R.raw.sound4, 1);
+        sounds[0] = soundPool.load((Activity)context, soundsIds[0], 1);
+        sounds[1] = soundPool.load((Activity)context, soundsIds[1], 1);
+        sounds[2] = soundPool.load((Activity)context, soundsIds[2], 1);
+        sounds[3] = soundPool.load((Activity)context, soundsIds[3], 1);
     }
 
     private void playSound(int soundId) {

@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
+
         game.showSequence();
     }
 
@@ -423,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.i("Tracking", newPosition + ": " + newScore + ">=" + highScoreValues[newPosition]);
             newPosition--;
         }*/
-        for (int i = newPosition; i < 10; i++){
+        for (int i = newPosition; i > 0; i--){
             highScoreValues[i+1] = highScoreValues[i];
             highScoreNames[i+1] = highScoreNames[i];
         }
