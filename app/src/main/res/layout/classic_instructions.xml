@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGray">
@@ -20,11 +21,11 @@
 
     <TextView
         android:id="@+id/objectTV"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="25dp"
         android:background="@color/darkBlue"
         android:gravity="center"
-        android:layout_margin="25dp"
         android:padding="10dp"
         android:text="@string/object_of_game"
         android:textColor="@color/white"
@@ -48,5 +49,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/objectTV"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintVertical_bias="0.176" />
+
+    <Button
+        android:id="@+id/backToGameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back_to_game"
+        android:onClick="onClick"
+        android:background="@color/darkBlue"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsTV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

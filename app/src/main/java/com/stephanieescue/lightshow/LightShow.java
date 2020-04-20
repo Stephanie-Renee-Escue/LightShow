@@ -1,26 +1,27 @@
 package com.stephanieescue.lightshow;
 
+// Team Members: Lionel Sosa Estrada, Stephanie Escue and Joshua Foster
+
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 public class LightShow {
     //declarations
     private List<Integer> steps = new ArrayList<Integer>();
     private List<Integer> userSteps = new ArrayList<Integer>();
-    public int score=0;
+    public int score = 0;
     private Button[] buttons = new Button[4];
     private int[] darkColors = new int[4];
     private int[] lightColors = new int[4];
@@ -28,27 +29,28 @@ public class LightShow {
     private SoundPool soundPool;
     private Set<Integer> soundsLoaded;
     private int[] sounds = new int[4];
-
+    private int[] soundsIds = new int[4];
 
     //default constructor
-    public LightShow(){
+    public LightShow() {
         soundsLoaded = new HashSet<Integer>();
         soundSetupClass();
     }
 
-    public LightShow(Context context){
+    public LightShow(Context context) {
         this.context = context;
         soundsLoaded = new HashSet<Integer>();
         soundSetupClass();
     }
 
     //constructor with views for the colors
-    public void setButtons(Button[] incoming_buttons){
-        for (int i = 0; i < 4; i++)
+    public void setButtons(Button[] incoming_buttons) {
+        for (int i = 0; i < 4; i++) {
             buttons[i] = incoming_buttons[i];
+        }
     }
 
-    public int get_current_step(){
+    public int get_current_step() {
         return (steps.size() - 1);
     }
 
@@ -57,20 +59,20 @@ public class LightShow {
         return random.nextInt(4);
     }
 
-    public void new_game(){
+    public void new_game() {
         steps.clear();
         userSteps.clear();
     }
 
-    public boolean validate_next_step(int current_step){
-        if (steps.get(steps.size()-1) == current_step) {
+    public boolean validate_next_step(int current_step) {
+        if (steps.get(steps.size() - 1) == current_step) {
             userSteps.add(current_step);
             return true;
         }
         return false;
     }
 
-    public boolean validate_previous_step(int position, int current_step){
+    public boolean validate_previous_step(int position, int current_step) {
         if (steps.get(position) == current_step) {
             userSteps.add(current_step);
             return true;
@@ -89,21 +91,21 @@ public class LightShow {
 
     }
 
-    public void disableButtons(){
-        for (int i = 0; i < 4; i++){
+    public void disableButtons() {
+        for (int i = 0; i < 4; i++) {
             buttons[i].setClickable(false);
         }
     }
 
-    public void enableButtons(){
-        for (int i = 0; i < 4; i++){
+    public void enableButtons() {
+        for (int i = 0; i < 4; i++) {
             buttons[i].setClickable(true);
         }
     }
 
 
     public void setColors(int oneDark, int oneLight, int twoDark, int twoLight,
-                          int threeDark, int threeLight, int fourDark, int fourLight){
+                          int threeDark, int threeLight, int fourDark, int fourLight) {
         darkColors[0] = oneDark;
         lightColors[0] = oneLight;
         darkColors[1] = twoDark;
@@ -112,6 +114,13 @@ public class LightShow {
         lightColors[2] = threeLight;
         darkColors[3] = fourDark;
         lightColors[3] = fourLight;
+    }
+
+    public void setSounds (int sound1, int sound2, int sound3, int sound4) {
+        soundsIds[0] = sound1;
+        soundsIds[1] = sound2;
+        soundsIds[2] = sound3;
+        soundsIds[3] = sound4;
     }
 
     class PauseThread extends AsyncTask<Void, Void, Void> {
@@ -190,11 +199,12 @@ public class LightShow {
             }
         });
 
-        // Assigning sounds to integer Id
-        sounds[0] = soundPool.load((Activity)context, R.raw.sound1, 1);
-        sounds[1] = soundPool.load((Activity)context, R.raw.sound2, 1);
-        sounds[2] = soundPool.load((Activity)context, R.raw.sound3, 1);
-        sounds[3] = soundPool.load((Activity)context, R.raw.sound4, 1);
+        // Assigning sounds
+        sounds[0] = soundPool.load((Activity) context, soundsIds[0], 1);
+        sounds[1] = soundPool.load((Activity) context, soundsIds[1], 1);
+        sounds[2] = soundPool.load((Activity) context, soundsIds[2], 1);
+        sounds[3] = soundPool.load((Activity) context, soundsIds[3], 1);
+
     }
 
     private void playSound(int soundId) {

@@ -1,21 +1,17 @@
 package com.stephanieescue.lightshow;
 
-// Team Members: Joshua Foster, Lionel Sosa Estrada, and Stephanie Escue
+// Team Members: Lionel Sosa Estrada, Stephanie Escue and Joshua Foster
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -49,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final private int MAX_STEPS = 25;
     String[] highScoreNames = new String[11];
     int[] highScoreValues = new int[11];
-    String gameType;
+    static String gameType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClick(View view) {
-
-
         switch (view.getId()) {
 
             //These 3 cases are for game selection
@@ -131,8 +123,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (gameType.equals("Surprise"))
                     playSurprise();
                 break;
-            //this is the button in high score
-                //The default is for the 4 game buttons
+            // Return to the game board after reading instructions
+            case R.id.backToGameButton:
+                setContentView(R.layout.game_board);
+                 break;
+
+             //The default is for the 4 game buttons
             default:
                 for (int i = 0; i < 4; i++){
                     if (view == buttons[i]){
@@ -145,8 +141,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void playClassic(){
         gameType = "Classic";
+
+        // Save game type to use in LightShow class
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.putExtra("game_type", gameType);
+        Log.i("extra", "game_type");
+        startActivity(intent);
+
         ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
+
+        // Go to instructions for game
+        findViewById(R.id.howToPlayButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.classic_instructions);
+            }
+        });
+
         buttons[0] = findViewById(R.id.topLeftButton);
         buttons[1] = findViewById(R.id.topRightButton);
         buttons[2] = findViewById(R.id.bottomLeftButton);
@@ -168,13 +180,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
+
+        game.setSounds(R.raw.sound1, R.raw.sound2, R.raw.sound3, R.raw.sound4);
         game.showSequence();
     }
 
     private void playSurprise(){
         setContentView(R.layout.game_board);
+
         ImageView logo = findViewById(R.id.logo);
-        logo.setImageResource(R.drawable.classic_logo);
+        logo.setImageResource(R.drawable.surprise_logo);
+
+        // Go to instructions for game
+        findViewById(R.id.howToPlayButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.surprise_instructions);
+            }
+        });
+
         buttons[0] = findViewById(R.id.topLeftButton);
         buttons[0].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[1] = findViewById(R.id.topRightButton);
@@ -204,6 +228,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightRed, null));
+
+        game.setSounds(R.raw.sound2, R.raw.sound2, R.raw.sound2, R.raw.sound2);
+        game.showSequence();
+    }
+
+    private void playRewind(){
+        gameType = "Rewind";
+        ImageView logo = findViewById(R.id.logo);
+        logo.setImageResource(R.drawable.rewind_logo);
+
+        // Setting instructions for game
+        findViewById(R.id.howToPlayButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.rewind_instructions);
+            }
+        });
+
+        buttons[0] = findViewById(R.id.topLeftButton);
+        buttons[1] = findViewById(R.id.topRightButton);
+        buttons[2] = findViewById(R.id.bottomLeftButton);
+        buttons[3] = findViewById(R.id.bottomRightButton);
+        count = 0;
+        game.new_game();
+        game.setButtons(buttons);
+
+        setGameboardListeners();
+
+        // playerScore.setText("Your Score: " + game.getScore);
+        // Add top score here
+
+        game.setColors(ResourcesCompat.getColor(getResources(), R.color.darkGreen, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightGreen, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkYellow, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
         game.showSequence();
     }
 
