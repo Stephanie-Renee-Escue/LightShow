@@ -112,6 +112,11 @@ public class LightShow {
         lightColors[2] = threeLight;
         darkColors[3] = fourDark;
         lightColors[3] = fourLight;
+        //set background back to the drawable resource
+        buttons[0].setBackgroundColor(darkColors[0]);
+        buttons[1].setBackgroundColor(darkColors[1]);
+        buttons[2].setBackgroundColor(darkColors[2]);
+        buttons[3].setBackgroundColor(darkColors[3]);
     }
 
     class PauseThread extends AsyncTask<Void, Void, Void> {
@@ -159,11 +164,6 @@ public class LightShow {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             enableButtons();
-            //set background back to the drawable resource
-            buttons[0].setBackgroundResource(R.drawable.topleftbutton);
-            buttons[1].setBackgroundResource(R.drawable.toprightbutton);
-            buttons[2].setBackgroundResource(R.drawable.bottomleftbutton);
-            buttons[3].setBackgroundResource(R.drawable.bottomrightbutton);
 
         }
     }

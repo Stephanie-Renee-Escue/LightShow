@@ -128,8 +128,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (gameType.equals("Classic")) {
                     PauseForIntro rePlayIntroClassic = new PauseForIntro("Classic");
                     rePlayIntroClassic.execute();
-                } else if (gameType.equals("Surprise"))
-                    playSurprise();
+                } else if (gameType.equals("Surprise")) {
+                    PauseForIntro rePlayIntroSurprise = new PauseForIntro("Surprise");
+                    rePlayIntroSurprise.execute();
+                    //playSurprise();
+                }
                 break;
             //this is the button in high score
                 //The default is for the 4 game buttons
@@ -145,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void playClassic(){
         gameType = "Classic";
-        ImageView logo = findViewById(R.id.logo);
+       ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
         buttons[0] = findViewById(R.id.topLeftButton);
         buttons[1] = findViewById(R.id.topRightButton);
@@ -172,17 +175,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playSurprise(){
-        setContentView(R.layout.game_board);
+        //setContentView(R.layout.game_board);
+        gameType="Surprise";
         ImageView logo = findViewById(R.id.logo);
-        logo.setImageResource(R.drawable.classic_logo);
+        logo.setImageResource(R.drawable.surprise_logo);
+
         buttons[0] = findViewById(R.id.topLeftButton);
-        buttons[0].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        //buttons[0].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[1] = findViewById(R.id.topRightButton);
-        buttons[1].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        //buttons[1].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[2] = findViewById(R.id.bottomLeftButton);
-        buttons[2].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        //buttons[2].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[3] = findViewById(R.id.bottomRightButton);
-        buttons[3].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        //buttons[3].setBackgroundColor(getResources().getColor(R.color.darkRed));
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -192,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // playerScore.setText("Your Score: " + game.getScore);
         // Add top score here
 
-        playSound(gameStartId);
+        //playSound(gameStartId);
 
 
         game.setColors(
@@ -293,11 +298,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Constructor that receives the game type to start
         public PauseForIntro(String game){
             gameType = game;
+
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
             setContentView(R.layout.game_board);
             playSound(gameStartId);
         }
