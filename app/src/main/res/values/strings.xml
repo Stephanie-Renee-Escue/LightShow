@@ -41,9 +41,24 @@
 
     <!-- Used for credit layout -->
     <string name="developers">Developers\n\nStephanie Escue\nLionel Sosa Estrada\nJoshua Foster</string>
-    <string name="sounds">Sounds\n\nSound effects obtained from https://www.zapsplat.com\n\nRetro game tone, digital synth, fifths, short single sounds 2, 3, 4 and 5</string>
+    <string name="sounds">
+        Sounds\n\nSound effects obtained from \n<a href="https://www.zapsplat.com">https://www.zapsplat.com</a>
+        \n\nRetro game tone, digital synth, fifths, short single sounds 2, 3, 4 and 5
+        \n\nRetro game tone, digital synth, fifths, negative, error, incorrect 3
+        \n\nMale voice says, game over 4
+        \n\n\Retro 8-bit game, jingle, win 00
+    </string>
+    <string name="sounds_landscape">
+        Sounds
+        \n\nSound effects obtained from <a href="https://www.zapsplat.com">https://www.zapsplat.com</a>
+        \n\nRetro game tone, digital synth, fifths, short single sounds 2, 3, 4 and 5
+        \n\nRetro game tone, digital synth, fifths, negative, error, incorrect 3
+        \n\nMale voice says, game over 4
+        \n\n\Retro 8-bit game, jingle, win 00
+    </string>
     <string name="lightShow_masters">LightShow Masters</string>
     <string name="score">Your Score:</string>
     <string name="top_score">Top Score:</string>
     <string name="game_over">GAME OVER</string>
+    <string name="view_credits">View Credits</string>
 </resources>

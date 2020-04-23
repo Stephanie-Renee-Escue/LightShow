@@ -11,7 +11,6 @@
         android:id="@+id/playClassicButton"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:layout_below="@id/classicLogoImageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@color/darkBlue"
@@ -29,8 +28,6 @@
         android:id="@+id/playRewindButton"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:layout_below="@id/rewindLogoImageView"
-        android:layout_centerHorizontal="true"
         android:background="@color/darkGreen"
         android:onClick="onClick"
         android:padding="10dp"
@@ -46,8 +43,6 @@
         android:id="@+id/playSurpriseButton"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:layout_below="@id/surpriseLogoImageView"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@color/darkRed"
         android:onClick="onClick"
@@ -78,8 +73,6 @@
         android:id="@+id/rewindLogoImageView"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_below="@id/playClassicButton"
-        android:layout_centerHorizontal="true"
         android:contentDescription="@string/ls_classic_logo"
         app:layout_constraintBottom_toTopOf="@+id/horizontal75"
         app:layout_constraintEnd_toStartOf="@+id/vertical50"
@@ -91,8 +84,6 @@
         android:id="@+id/surpriseLogoImageView"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_below="@id/playRewindButton"
-        android:layout_centerHorizontal="true"
         android:contentDescription="@string/ls_surprise_logo"
         app:layout_constraintBottom_toTopOf="@+id/horizontal86"
         app:layout_constraintEnd_toStartOf="@+id/vertical50"
@@ -104,8 +95,6 @@
         android:id="@+id/classicLogoImageView"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
         android:contentDescription="@string/ls_rewind_logo"
         app:layout_constraintBottom_toTopOf="@+id/horizontal38"
         app:layout_constraintEnd_toStartOf="@+id/vertical50"
@@ -148,7 +137,6 @@
         android:id="@+id/surpriseInstructionsButton"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:layout_below="@id/surpriseLogoImageView"
         android:layout_marginBottom="10dp"
         android:background="@color/darkRed"
         android:onClick="onClick"
@@ -187,6 +175,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="@color/darkYellow"
@@ -250,6 +239,19 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp"
         app:layout_constraintGuide_percent="0.86"/>
+
+    <TextView
+        android:id="@+id/viewCreditsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/view_credits"
+        android:textColor="@color/black"
+        android:onClick="onClick"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontal86" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

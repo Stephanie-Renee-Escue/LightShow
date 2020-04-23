@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGray">
@@ -20,7 +21,7 @@
 
     <TextView
         android:id="@+id/objectTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/darkRed"
         android:gravity="center"
@@ -43,10 +44,23 @@
         android:text="@string/surprise_instructions"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/objectTV"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintTop_toBottomOf="@+id/objectTV" />
+
+    <Button
+        android:id="@+id/mainMenuButton"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:background="@color/darkRed"
+        android:onClick="mainMenu"
+        android:padding="10dp"
+        android:text="@string/main_menu"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsTV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

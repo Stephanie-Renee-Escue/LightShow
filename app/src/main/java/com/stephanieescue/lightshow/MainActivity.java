@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int[] sounds = new int[4];
     private Button[] buttons = new Button[4];
     int errorId, gameStartId, gameOverId;
-    public TextView message, playerScore, highScore;;
+    public TextView message, playerScore, highScore, credits, viewCredits;
     LightShow game;
     int count;
     final private int MAX_STEPS = 25;
@@ -57,9 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Assigning all TextViews
         message = findViewById(R.id.messageTV);
         playerScore = findViewById(R.id.playerScoreTV);
         highScore = findViewById(R.id.topScoreTV);
+        credits = findViewById(R.id.creditsTV);
+        viewCredits = findViewById(R.id.viewCreditsTV);
 
         soundsLoaded = new HashSet<Integer>();
         soundSetup();
@@ -142,6 +145,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setContentView(R.layout.surprise_instructions);
                 break;
 
+             // Clickable text view
+            case R.id.viewCreditsTV:
+                setContentView(R.layout.credits);
+                break;
+
             //this is the button in high score
                 //The default is for the 4 game buttons
             default:
@@ -152,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
         }
-    }
-
-    private void backToGame() {
-        return;
     }
 
     private void playClassic(){
