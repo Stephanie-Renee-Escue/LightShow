@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 playIntroClassic.execute();
                 break;
             case R.id.playRewindButton:
-                playClassic();
+                PauseForIntro playIntroRewind = new PauseForIntro("Rewind");
+                playIntroRewind.execute();
                 break;
             case R.id.playSurpriseButton:
                 PauseForIntro playIntroSurprise = new PauseForIntro("Surprise");
@@ -198,6 +199,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         game.showSequence();
     }
 
+    private void playRewind(){
+        gameType = "Rewind";
+        ImageView logo = findViewById(R.id.logo);
+        logo.setImageResource(R.drawable.classic_logo);
+        buttons[0] = findViewById(R.id.topLeftButton);
+        buttons[1] = findViewById(R.id.topRightButton);
+        buttons[2] = findViewById(R.id.bottomLeftButton);
+        buttons[3] = findViewById(R.id.bottomRightButton);
+        sounds[0] = soundPool.load(this, R.raw.sound1, 1);
+        sounds[1] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[2] = soundPool.load(this, R.raw.sound3, 1);
+        sounds[3] = soundPool.load(this, R.raw.sound4, 1);
+
+        count = 0;
+        game.new_game();
+        game.setButtons(buttons);
+
+        setGameboardListeners();
+
+        // playerScore.setText("Your Score: " + game.getScore);
+        // Add top score here
+
+        game.setColors(ResourcesCompat.getColor(getResources(), R.color.darkGreen, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightGreen, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkYellow, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
+                ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
+                ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
+        game.setSounds(R.raw.sound1, R.raw.sound2, R.raw.sound3, R.raw.sound4);
+        game.showSequence();
+    }
+
+
     private void playSurprise(){
         //setContentView(R.layout.game_board);
         gameType="Surprise";
@@ -278,22 +314,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public nextStep(TextView message) {
             gameMessage = message;
         } */
-        int step_count = game.get_current_step();
-        if (count < step_count){ //partial step
-            if (game.validate_previous_step(count, step))
-                count++;
-            else
-                endGame();
-        } else { //final step of current sequence
-            if (step_count == MAX_STEPS) {//user reached max number of steps
-                if (game.validate_next_step(step))
-                    winGame();
-            } else { //max number of current sequence
-                if (game.validate_next_step(step)) {
-                    count = 0;
-                    game.showSequence();
-                } else
+        if (gameType == "Rewind") {
+            int step_count = game.get_current_step();
+            if (count < step_count) { //partial step
+                if (game.validate_previous_step((step_count - count), step))
+                    count++;
+                else
                     endGame();
+            } else { //final step of current sequence
+                if (step_count == MAX_STEPS) {//user reached max number of steps
+                    if (game.validate_previous_step((step_count - count), step))
+                        winGame();
+                } else { //max number of current sequence
+                    if (game.validate_previous_step((step_count - count), step)) {
+                        count = 0;
+                        game.showSequence();
+                    } else
+                        endGame();
+                }
+            }
+
+        } else { //for Classic and Surprise
+            int step_count = game.get_current_step();
+            if (count < step_count) { //partial step
+                if (game.validate_previous_step(count, step))
+                    count++;
+                else
+                    endGame();
+            } else { //final step of current sequence
+                if (step_count == MAX_STEPS) {//user reached max number of steps
+                    if (game.validate_next_step(step))
+                        winGame();
+                } else { //max number of current sequence
+                    if (game.validate_next_step(step)) {
+                        count = 0;
+                        game.showSequence();
+                    } else
+                        endGame();
+                }
             }
         }
     }
@@ -349,6 +407,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case "Surprise":
                     playSurprise();
+                    break;
+                case "Rewind":
+                    playRewind();
                     break;
             }
         }
