@@ -176,7 +176,16 @@ public class LightShow {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             enableButtons();
-
+            if (soundsIds[0] == soundsIds[1]){ //playing surprise
+                for (int i = 0; i < 4; i++)
+                    buttons[i].setBackgroundResource(R.drawable.toprightbutton);
+            } else {
+                //set background back to the drawable resource
+                buttons[0].setBackgroundResource(R.drawable.topleftbutton);
+                buttons[1].setBackgroundResource(R.drawable.toprightbutton);
+                buttons[2].setBackgroundResource(R.drawable.bottomleftbutton);
+                buttons[3].setBackgroundResource(R.drawable.bottomrightbutton);
+            }
         }
     }
 
