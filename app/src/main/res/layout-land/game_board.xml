@@ -27,8 +27,8 @@
         android:layout_marginStart="5dp"
         android:background="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/vertical55"
-        app:layout_constraintTop_toTopOf="@+id/horizontal50" />
+        app:layout_constraintStart_toStartOf="@+id/vertical66"
+        app:layout_constraintTop_toTopOf="@+id/horizontal38" />
 
     <Button
         android:id="@+id/bottomLeftButton"
@@ -37,9 +37,9 @@
 
         android:background="@color/darkYellow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        app:layout_constraintEnd_toStartOf="@+id/vertical66"
         app:layout_constraintStart_toStartOf="@+id/vertical33"
-        app:layout_constraintTop_toTopOf="@+id/horizontal50" />
+        app:layout_constraintTop_toTopOf="@+id/horizontal38" />
 
     <Button
         android:id="@+id/topRightButton"
@@ -47,8 +47,8 @@
         android:layout_height="150dp"
         android:layout_marginStart="5dp"
         android:background="@color/darkRed"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal50"
-        app:layout_constraintStart_toStartOf="@+id/vertical55"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal38"
+        app:layout_constraintStart_toStartOf="@+id/vertical66"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -70,8 +70,8 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@color/darkGreen"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal50"
-        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal38"
+        app:layout_constraintEnd_toStartOf="@+id/vertical66"
         app:layout_constraintStart_toStartOf="@+id/vertical33"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,25 +88,11 @@
         app:srcCompat="@drawable/main_logo" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal50"
+        android:id="@+id/horizontal38"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50121653" />
-
-    <Button
-        android:id="@+id/howToPlayButton"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:background="@color/darkRed"
-        android:padding="10dp"
-        android:text="@string/how_to_play"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
-        app:layout_constraintEnd_toStartOf="@+id/vertical33"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal35" />
+        app:layout_constraintGuide_percent="0.50" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical33"
@@ -116,7 +102,7 @@
         app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical55"
+        android:id="@+id/vertical66"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

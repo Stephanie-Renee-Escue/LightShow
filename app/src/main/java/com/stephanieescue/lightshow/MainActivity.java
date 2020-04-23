@@ -91,13 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hs.setOnClickListener(this);
 
         // setup game board
-
         for (int i = 0; i < 4; i++)
             buttons[i].setOnClickListener(this);
     }
 
     public void onClick(View view) {
-
 
         switch (view.getId()) {
 
@@ -107,14 +105,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 playIntroClassic.execute();
                 break;
             case R.id.playRewindButton:
-                //logo.setImageResource(R.drawable.rewind_logo);
                 playClassic();
                 break;
             case R.id.playSurpriseButton:
-                //logo.setImageResource(R.drawable.surprise_logo);
                 PauseForIntro playIntroSurprise = new PauseForIntro("Surprise");
                 playIntroSurprise.execute();
                 break;
+
             //These 3 are for buttons in the game board
             case R.id.mainMenuButton:
             case R.id.mainMenuHighScores:
@@ -131,9 +128,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (gameType.equals("Surprise")) {
                     PauseForIntro rePlayIntroSurprise = new PauseForIntro("Surprise");
                     rePlayIntroSurprise.execute();
-                    //playSurprise();
                 }
                 break;
+
+             // These 3 buttons show the game instructions
+            case R.id.classicInstructionsButton:
+                setContentView(R.layout.classic_instructions);
+                break;
+            case R.id.rewindInstructionsButton:
+                setContentView(R.layout.rewind_instructions);
+                break;
+            case R.id.surpriseInstructionsButton:
+                setContentView(R.layout.surprise_instructions);
+                break;
+
             //this is the button in high score
                 //The default is for the 4 game buttons
             default:
@@ -146,9 +154,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void backToGame() {
+        return;
+    }
+
     private void playClassic(){
         gameType = "Classic";
-       ImageView logo = findViewById(R.id.logo);
+        ImageView logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.classic_logo);
         buttons[0] = findViewById(R.id.topLeftButton);
         buttons[1] = findViewById(R.id.topRightButton);
@@ -171,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightYellow, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkBlue, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightBlue, null));
+        game.setSounds(R.raw.sound1, R.raw.sound2, R.raw.sound3, R.raw.sound4);
         game.showSequence();
     }
 
@@ -209,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ResourcesCompat.getColor(getResources(), R.color.lightRed, null),
                 ResourcesCompat.getColor(getResources(), R.color.darkRed, null),
                 ResourcesCompat.getColor(getResources(), R.color.lightRed, null));
+        game.setSounds(R.raw.sound2, R.raw.sound2, R.raw.sound2, R.raw.sound2);
         game.showSequence();
     }
 
@@ -298,16 +312,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Constructor that receives the game type to start
         public PauseForIntro(String game){
             gameType = game;
-
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             setContentView(R.layout.game_board);
             playSound(gameStartId);
-        }
+         }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -322,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             switch (gameType) {
                 case "Classic":
                     playClassic();

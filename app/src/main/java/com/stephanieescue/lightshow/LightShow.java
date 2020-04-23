@@ -28,7 +28,7 @@ public class LightShow {
     private SoundPool soundPool;
     private Set<Integer> soundsLoaded;
     private int[] sounds = new int[4];
-
+    private int[] soundsIds = new int[4];
 
     //default constructor
     public LightShow(){
@@ -38,8 +38,6 @@ public class LightShow {
 
     public LightShow(Context context){
         this.context = context;
-        soundsLoaded = new HashSet<Integer>();
-        soundSetupClass();
     }
 
     //constructor with views for the colors
@@ -112,12 +110,26 @@ public class LightShow {
         lightColors[2] = threeLight;
         darkColors[3] = fourDark;
         lightColors[3] = fourLight;
+
         //set background back to the drawable resource
         buttons[0].setBackgroundColor(darkColors[0]);
         buttons[1].setBackgroundColor(darkColors[1]);
         buttons[2].setBackgroundColor(darkColors[2]);
         buttons[3].setBackgroundColor(darkColors[3]);
     }
+
+    public void setSounds (int sound1, int sound2, int sound3, int sound4) {
+        soundsIds[0] = sound1;
+        soundsIds[1] = sound2;
+        soundsIds[2] = sound3;
+        soundsIds[3] = sound4;
+
+        soundsLoaded = new HashSet<Integer>();
+        soundSetupClass();
+        soundsLoaded = new HashSet<Integer>();
+        soundSetupClass();
+    }
+
 
     class PauseThread extends AsyncTask<Void, Void, Void> {
         @Override
@@ -190,11 +202,11 @@ public class LightShow {
             }
         });
 
-        // Assigning sounds to integer Id
-        sounds[0] = soundPool.load((Activity)context, R.raw.sound1, 1);
-        sounds[1] = soundPool.load((Activity)context, R.raw.sound2, 1);
-        sounds[2] = soundPool.load((Activity)context, R.raw.sound3, 1);
-        sounds[3] = soundPool.load((Activity)context, R.raw.sound4, 1);
+        // Assigning sounds
+        sounds[0] = soundPool.load((Activity) context, soundsIds[0], 1);
+        sounds[1] = soundPool.load((Activity) context, soundsIds[1], 1);
+        sounds[2] = soundPool.load((Activity) context, soundsIds[2], 1);
+        sounds[3] = soundPool.load((Activity) context, soundsIds[3], 1);
     }
 
     private void playSound(int soundId) {

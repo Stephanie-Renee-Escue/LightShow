@@ -1,54 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGray">
 
     <Button
         android:id="@+id/playClassicButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
         android:layout_below="@id/classicLogoImageView"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="@color/darkBlue"
         android:padding="10dp"
         android:text="@string/play_classic"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal72"
         app:layout_constraintEnd_toStartOf="@+id/vertical33"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/classicLogoImageView" />
+        app:layout_constraintTop_toTopOf="@+id/horizontal43" />
 
     <Button
         android:id="@+id/playRewindButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
         android:layout_below="@id/rewindLogoImageView"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="@color/darkGreen"
         android:padding="10dp"
         android:text="@string/play_rewind"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal72"
+        app:layout_constraintEnd_toStartOf="@+id/vertical66"
         app:layout_constraintStart_toStartOf="@+id/vertical33"
-        app:layout_constraintTop_toBottomOf="@+id/rewindLogoImageView" />
+        app:layout_constraintTop_toTopOf="@+id/horizontal43" />
 
     <Button
         android:id="@+id/playSurpriseButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
         android:layout_below="@id/surpriseLogoImageView"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="@color/darkRed"
         android:padding="10dp"
         android:text="@string/play_surprise"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal72"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/vertical55"
-        app:layout_constraintTop_toBottomOf="@+id/surpriseLogoImageView" />
+        app:layout_constraintStart_toStartOf="@+id/vertical66"
+        app:layout_constraintTop_toTopOf="@+id/horizontal43" />
 
     <TextView
         android:id="@+id/textView"
@@ -58,7 +63,7 @@
         android:text="@string/main_text"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal24"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -67,16 +72,12 @@
         android:id="@+id/rewindLogoImageView"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_below="@id/textView"
-        android:layout_margin="50dp"
-        android:layout_marginEnd="44dp"
-        android:layout_toEndOf="@id/classicLogoImageView"
-        android:contentDescription="@string/ls_classic_logo"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
-        app:layout_constraintEnd_toStartOf="@+id/vertical55"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/ls_rewind_logo"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal43"
+        app:layout_constraintEnd_toStartOf="@+id/vertical66"
         app:layout_constraintStart_toStartOf="@+id/vertical33"
-        app:layout_constraintTop_toTopOf="@+id/horizontal24"
-        app:layout_constraintVertical_bias="0.506"
+        app:layout_constraintTop_toBottomOf="@+id/horizontal20"
         app:srcCompat="@drawable/rewind_logo" />
 
     <ImageView
@@ -85,43 +86,96 @@
         android:layout_height="90dp"
         android:layout_below="@id/textView"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/rewindLogoImageView"
         android:contentDescription="@string/ls_surprise_logo"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal43"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/vertical55"
-        app:layout_constraintTop_toTopOf="@+id/horizontal24"
+        app:layout_constraintStart_toStartOf="@+id/vertical66"
+        app:layout_constraintTop_toTopOf="@+id/horizontal20"
         app:srcCompat="@drawable/surprise_logo" />
 
     <ImageView
         android:id="@+id/classicLogoImageView"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="50dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="52dp"
-        android:contentDescription="@string/ls_rewind_logo"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal55"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/ls_classic_logo"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal43"
         app:layout_constraintEnd_toStartOf="@+id/vertical33"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal24"
+        app:layout_constraintTop_toTopOf="@+id/horizontal20"
         app:srcCompat="@drawable/classic_logo" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.24" />
+    <Button
+        android:id="@+id/classicInstructionsButton"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/darkBlue"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="@string/how_to_play"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vertical33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playClassicButton" />
+
+    <Button
+        android:id="@+id/rewindInstructionsButton"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/darkGreen"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="@string/how_to_play"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vertical66"
+        app:layout_constraintStart_toStartOf="@+id/vertical33"
+        app:layout_constraintTop_toBottomOf="@+id/playRewindButton" />
+
+    <Button
+        android:id="@+id/surpriseInstructionsButton"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/surpriseLogoImageView"
+        android:layout_marginTop="5dp"
+        android:background="@color/darkRed"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="@string/how_to_play"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical66"
+        app:layout_constraintTop_toBottomOf="@+id/playSurpriseButton" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal55"
+        android:id="@+id/horizontal20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.19"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal43"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.46" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal72"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.72" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical33"
@@ -131,7 +185,7 @@
         app:layout_constraintGuide_percent="0.3333" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical55"
+        android:id="@+id/vertical66"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
