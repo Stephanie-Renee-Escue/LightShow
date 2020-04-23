@@ -67,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+    }
+
     private void setMainActivityListeners(){
         //set listeners for game selection
         Button temp;
@@ -166,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttons[1] = findViewById(R.id.topRightButton);
         buttons[2] = findViewById(R.id.bottomLeftButton);
         buttons[3] = findViewById(R.id.bottomRightButton);
+        sounds[0] = soundPool.load(this, R.raw.sound1, 1);
+        sounds[1] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[2] = soundPool.load(this, R.raw.sound3, 1);
+        sounds[3] = soundPool.load(this, R.raw.sound4, 1);
+
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -194,13 +205,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         logo.setImageResource(R.drawable.surprise_logo);
 
         buttons[0] = findViewById(R.id.topLeftButton);
-        //buttons[0].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[1] = findViewById(R.id.topRightButton);
-        //buttons[1].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[2] = findViewById(R.id.bottomLeftButton);
-        //buttons[2].setBackgroundColor(getResources().getColor(R.color.darkRed));
         buttons[3] = findViewById(R.id.bottomRightButton);
-        //buttons[3].setBackgroundColor(getResources().getColor(R.color.darkRed));
+        sounds[0] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[1] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[2] = soundPool.load(this, R.raw.sound2, 1);
+        sounds[3] = soundPool.load(this, R.raw.sound2, 1);
+
         count = 0;
         game.new_game();
         game.setButtons(buttons);
@@ -249,10 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // Assigning sounds to integer Id
-        sounds[0] = soundPool.load(this, R.raw.sound1, 1);
-        sounds[1] = soundPool.load(this, R.raw.sound2, 1);
-        sounds[2] = soundPool.load(this, R.raw.sound3, 1);
-        sounds[3] = soundPool.load(this, R.raw.sound4, 1);
         errorId = soundPool.load(this, R.raw.error, 1);
         gameStartId = soundPool.load(this, R.raw.startgame, 1);
         gameOverId = soundPool.load(this, R.raw.gameover, 1);
