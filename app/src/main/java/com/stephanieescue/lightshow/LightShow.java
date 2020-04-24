@@ -76,15 +76,18 @@ public class LightShow {
         return false;
     }
 
+    PauseThread pause;
 
     public void showSequence() {
         steps.add(generate_step());
 
         //Changing color in a new thread
-        PauseThread pause = new PauseThread();
+        pause = new PauseThread();
         pause.execute();
+    }
 
-
+    public void stopThread(){
+        pause.cancel(true);
     }
 
     public void disableButtons(){

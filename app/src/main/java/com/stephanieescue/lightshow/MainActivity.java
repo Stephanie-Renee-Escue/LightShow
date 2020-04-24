@@ -20,12 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,10 +47,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public TextView message, playerScore, highScore, credits, viewCredits;
     LightShow game;
     int count;
-    final private int MAX_STEPS = 25;
-    String[] highScoreNames = new String[11];
-    int[] highScoreValues = new int[11];
+    final private int MAX_STEPS = 24; // counting [0]
     String gameType;
+    List<String> highScoreNames = new ArrayList<String>();
+    List<Integer> highScoreValues = new ArrayList<Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause(){
         super.onPause();
+        game.stopThread();
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setContentView(R.layout.activity_main);
+        setMainActivityListeners();
     }
 
     private void setMainActivityListeners(){
@@ -457,78 +466,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int score = game.get_current_step();
             // read high scores or write new file
             if (readHighScores()){
-                if (score >= highScoreValues[9]){ //player scored higher than records
-                    addScore(game.get_current_step());
+                if ((score >= highScoreValues.get(highScoreValues.size() -1 )) || (highScoreValues.size() < 10)){ //player scored higher than records
+                    addScore(score);
                 }
             } else {
-                createScores();
-                Boolean temp = readHighScores();
-                addScore(game.get_current_step());
+                addScore(score);
             }
             game.disableButtons();
         }
     }
 
-    private void createScores(){
-        FileOutputStream fos;
-        try {
-            fos = openFileOutput("highScores.txt", Context.MODE_PRIVATE);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            BufferedWriter bw = new BufferedWriter(osw);
-            PrintWriter pw = new PrintWriter(bw);
-            for (int i = 0; i < 10; i++){
-                pw.println("null");
-                pw.println("0");
-            }
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private void saveScores(){
-        FileOutputStream fos;
+        //First sort the array
+        if (highScoreValues.size() >= 2) { //only sort if more than 2 scores
+            for (int i = 0; i < highScoreValues.size()-1; i++)
+                for (int j = i + 1 ; j < highScoreValues.size(); j++)
+                    if (highScoreValues.get(j) > highScoreValues.get(i)){
+                        Log.i("Tracking", highScoreValues.get(j) + ">" + highScoreValues.get(i));
+                        int tempInt = highScoreValues.get(i);
+                        highScoreValues.set(i, highScoreValues.get(j));
+                        highScoreValues.set(j, tempInt);
+                        String tempString = highScoreNames.get(i);
+                        highScoreNames.set(i, highScoreNames.get(j));
+                        highScoreNames.set(j, tempString);
+                    }
+        }
         try {
+            FileOutputStream fos;
             fos = openFileOutput("highScores.txt", Context.MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter bw = new BufferedWriter(osw);
             PrintWriter pw = new PrintWriter(bw);
-            for (int i = 0; i < 10; i++){
-                pw.println(highScoreNames[i]);
-                pw.println(highScoreValues[i]);
+            for (int i = 0; i < highScoreNames.size(); i++){
+                pw.println(highScoreNames.get(i));
+                pw.println(highScoreValues.get(i));
             }
             pw.close();
+            highScoreNames.clear();
+            highScoreValues.clear();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e("Exception", "File not read " + e.getMessage());
         }
-
     }
 
 
     private void addScore(int newScore){
-        int newPosition = 0;
-        for (int i = 0; i < 10; i++){
-            if (newScore >= highScoreValues[newPosition])
-                break;
-        }
-        /*while ((newScore >= highScoreValues[newPosition - 1]) && (newPosition > 0)) {
-            Log.i("Tracking", newPosition + ": " + newScore + ">=" + highScoreValues[newPosition]);
-            newPosition--;
-        }*/
-        for (int i = newPosition; i < 10; i++){
-            highScoreValues[i+1] = highScoreValues[i];
-            highScoreNames[i+1] = highScoreNames[i];
-        }
-        highScoreValues[newPosition] = newScore;
-        getNewName(newPosition);
-
+        highScoreValues.add(newScore);
+        getNewName();
     }
 
     //inflate dialog to get player's name
-    private void getNewName(int position){
-
-        final int pos = position;
+    private void getNewName(){
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.high_score_dialog, null);
 
@@ -546,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                highScoreNames[pos] = userInput.getText().toString();
+                                highScoreNames.add(userInput.getText().toString());
                                 saveScores();
                             }
                         });
@@ -568,12 +557,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try { //tries to open file with high scores
             FileInputStream fis = openFileInput("highScores.txt");
             Scanner scanner = new Scanner(fis);
-            for (int i = 0; i < 10; i++){
-                highScoreNames[i] = scanner.nextLine();
-                if (highScoreNames[i] == "null"){
-                    highScoreNames[i] = "";
-                }
-                highScoreValues[i] = Integer.parseInt(scanner.nextLine());
+            while (scanner.hasNext()){
+                highScoreNames.add(scanner.nextLine());
+                highScoreValues.add(Integer.parseInt(scanner.nextLine()));
             }
             scanner.close();
             return true;
@@ -584,12 +570,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showHighScores(){
         setContentView(R.layout.high_score);
-        String[] highScoresList = new String[10];
-        for (int i = 0; i < 10; i++)
-            highScoresList[i] = highScoreValues[i] + " - " + highScoreNames[i];
-        ListView listView = findViewById(R.id.highScoreListView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoresList);
-        listView.setAdapter(adapter);
-        setHighScoreListener();
+        if (readHighScores()) {
+            String[] highScoresList = new String[highScoreValues.size()];
+            for (int i = 0; i < highScoreValues.size(); i++) {
+                highScoresList[i] = highScoreValues.get(i) + " - " + highScoreNames.get(i);
+                Log.i("Tracking", "Read " + highScoreValues.size() + "records");
+            }
+            ListView listView = findViewById(R.id.highScoreListView);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoresList);
+            listView.setAdapter(adapter);
+            //((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+            setHighScoreListener();
+            highScoreValues.clear();
+            highScoreNames.clear();
+
+        } else {
+            String[] highScoresList = new String[1];
+            highScoresList[0] = "No high scores yet";
+            ListView listView = findViewById(R.id.highScoreListView);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoresList);
+            listView.setAdapter(adapter);
+            setHighScoreListener();
+        }
     }
 }
