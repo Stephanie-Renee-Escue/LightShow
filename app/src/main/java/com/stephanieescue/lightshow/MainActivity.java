@@ -26,6 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -147,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (gameType.equals("Surprise")) {
                     PauseForIntro rePlayIntroSurprise = new PauseForIntro("Surprise");
                     rePlayIntroSurprise.execute();
+                }else if (gameType.equals("Rewind")) {
+                    PauseForIntro rePlayIntroRewind = new PauseForIntro("Rewind");
+                    rePlayIntroRewind.execute();
                 }
                 break;
 
@@ -342,6 +348,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (game.validate_previous_step((step_count - count), step)) {
                         count = 0;
                         game.showSequence();
+                        TextView tv = findViewById(R.id.playerScoreTV);
+                        tv.setText("Your Score: " + (step_count + 1));
+
                     } else
                         endGame();
                 }
@@ -362,6 +371,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (game.validate_next_step(step)) {
                         count = 0;
                         game.showSequence();
+                        TextView tv = findViewById(R.id.playerScoreTV);
+                        tv.setText("Your Score: " + (step_count + 1));
                     } else
                         endGame();
                 }
@@ -398,6 +409,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onPreExecute();
             setContentView(R.layout.game_board);
             playSound(gameStartId);
+            loadHighScore();
          }
 
         @Override
@@ -425,6 +437,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     playRewind();
                     break;
             }
+        }
+    }
+
+    private void loadHighScore(){
+        if (readHighScores()){
+            TextView tv = findViewById(R.id.topScoreTV);
+            tv.setText("Top Score: " + highScoreValues.get(0));
+            tv = findViewById(R.id.playerScoreTV);
+            tv.setText("Your Score:");
+            highScoreValues.clear();
+            highScoreNames.clear();
         }
     }
 
@@ -479,6 +502,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void saveScores(){
         //First sort the array
+        while (highScoreValues.size() > 10){ //limit top scores to 10
+            highScoreValues.remove(highScoreValues.size() - 1);
+            highScoreNames.remove(highScoreNames.size() - 1);
+        }
         if (highScoreValues.size() >= 2) { //only sort if more than 2 scores
             for (int i = 0; i < highScoreValues.size()-1; i++)
                 for (int j = i + 1 ; j < highScoreValues.size(); j++)
