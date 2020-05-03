@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // Assigning all TextViews
-        message = findViewById(R.id.messageTV);
         playerScore = findViewById(R.id.playerScoreTV);
         highScore = findViewById(R.id.topScoreTV);
         credits = findViewById(R.id.creditsTV);

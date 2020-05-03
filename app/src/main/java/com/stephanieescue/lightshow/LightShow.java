@@ -87,7 +87,9 @@ public class LightShow {
     }
 
     public void stopThread(){
-        pause.cancel(true);
+        if (pause != null) {
+            pause.cancel(true);
+        }
     }
 
     public void disableButtons(){

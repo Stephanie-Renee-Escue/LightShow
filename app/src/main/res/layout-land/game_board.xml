@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/playAgainButton"
+        android:id="@+id/playButton"
         android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:background="@color/darkRed"
@@ -135,5 +135,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75" />
+
+    <Button
+        android:id="@+id/highScoreButton"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:background="@color/darkRed"
+        android:padding="10dp"
+        android:text="@string/high_score"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal38"
+        app:layout_constraintEnd_toStartOf="@+id/vertical33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontal35" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
